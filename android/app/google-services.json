@@ -7,25 +7,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:25779814206:android:4a8d0d480231a5b348f66f",
-        "android_client_info": {
-          "package_name": "com.example.eki_kug"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCMH4WJRGxeCk5VABZBVshqiBysiHgLklQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:25779814206:android:e3d6afffd9df8c6148f66f",
         "android_client_info": {
           "package_name": "com.example.eki_kuguru"
