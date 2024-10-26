@@ -96,9 +96,12 @@ class _SearchPage extends State<SearchPage> {
                             searchValue = predictions[index];
                             if (searchValue!.structuredFormatting!.mainText.toString().contains("駅")){
                               stationName = searchValue!.structuredFormatting!.mainText.toString();
-                              LatLng.add(locations.first.latitude);
-                              LatLng.add(locations.first.longitude);
+                            } else {
+                              stationName = "NotAStation"; // 駅名以外の場所が選択された場合はNotAStationを格納
                             }
+                            LatLng.add(locations.first.latitude);
+                            LatLng.add(locations.first.longitude);
+
                           });
                           // Navigator.popで前の画面に戻るときに併せて経度と緯度を渡す。
                           Navigator.pop(

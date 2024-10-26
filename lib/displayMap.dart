@@ -63,17 +63,21 @@ class _MapAppState extends State<MapApp> {
     ));
   }
   Future<void> searchLocation(List position, String name) async {
-    marker = null;
-    Marker stationMarker = Marker(
-      markerId: const MarkerId("station"),
-      position: LatLng(position[0], position[1]),
-      icon: BitmapDescriptor.defaultMarkerWithHue(25),
-      infoWindow: InfoWindow(title: name, snippet: "改札内：トイレ, 改札外：トイレ"),
-      // TODO:FireBaseから取得した設備情報を表示
-    );
-    setState(() {
-      marker = stationMarker;
-    });
+    if (name != "NotAStation") {
+      marker = null;
+      Marker stationMarker = Marker(
+        markerId: const MarkerId("station"),
+        position: LatLng(position[0], position[1]),
+        icon: BitmapDescriptor.defaultMarkerWithHue(25),
+        infoWindow: InfoWindow(title: name, snippet: "改札内：トイレ, 改札外：トイレ"),
+        // TODO:FireBaseから取得した設備情報を表示
+      );
+      setState(() {
+        marker = stationMarker;
+      });
+      _mapController.showMarkerInfoWindow(const MarkerId("station"));
+    }
+    
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -82,7 +86,7 @@ class _MapAppState extends State<MapApp> {
         )
       )
     );
-    _mapController.showMarkerInfoWindow(const MarkerId("station"));
+    
   }
 
   @override
