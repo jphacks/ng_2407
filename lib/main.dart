@@ -30,9 +30,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // home: const MapApp(),
-      // home: const MainPage(),
-      home: const MyHomePage(title:"test"),
+      home: const MyHomePage(title: "test"),
     );
   }
 }
@@ -102,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
 
     return Scaffold(
-      appBar: Header(state:0),
+      appBar: Header(state: 0),
       body: Column(
         children: [
           Expanded(
