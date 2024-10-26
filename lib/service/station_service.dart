@@ -216,9 +216,10 @@ class StationService {
     }
   }
 
+  // 施設のstateを更新する
   Future<bool> updateFacilityState(
       {required String stationName,
-      required String facilityName,
+      required List<String> facilityNames,
       required int newState}) async {
     try {
       // まず駅を検索
@@ -238,16 +239,107 @@ class StationService {
       final facilitySnapshot = await _firestore
           .collection('facilities')
           .where('stationRef', isEqualTo: stationRef)
-          .where('name', isEqualTo: facilityName)
+          .where('name', whereIn: facilityNames)
           .get();
 
       if (facilitySnapshot.docs.isEmpty) {
-        print('指定された駅の施設が見つかりません: $facilityName');
+        print('指定された駅の施設が見つかりません: $facilityNames');
         return false;
       }
 
       // 施設のstateを更新
-      await facilitySnapshot.docs.first.reference.update({'state': newState});
+      WriteBatch batch = _firestore.batch();
+
+      for (var doc in facilitySnapshot.docs) {
+        batch.update(doc.reference, {'state': newState});
+      }
+
+      await batch.commit();
+
+      return true;
+    } catch (e) {
+      print('エラーが発生しました: $e');
+      throw e;
+    }
+  }
+
+  // 施設のvoteを更新する
+  // 1. vote_inside_gate, 2. vote_outside_gate, 3. vote_no
+  // 期待する入力
+  // [{
+  //   "facilityName": str,
+  //   "add_vote": int,
+  //},...]
+  // facilityNameで指定された施設のvoteを増やす(1だったら、vote_inside_gateを1増やすなど)
+  Future<bool> updateFacilityVote(
+      {required String stationName,
+      required List<Map<String, dynamic>> voteUpdates}) async {
+    try {
+      print("stationName: $stationName");
+      // まず駅を検索
+      final stationSnapshot = await _firestore
+          .collection('stations')
+          .where('name', isEqualTo: stationName)
+          .get();
+
+      if (stationSnapshot.docs.isEmpty) {
+        print('指定された駅が見つかりません: $stationName');
+        return false;
+      }
+
+      final stationRef = stationSnapshot.docs.first.reference;
+
+      // 施設名のリストを作成
+      final facilityNames = voteUpdates
+          .map((update) => update['facilityName'] as String)
+          .toList();
+
+      // 駅と施設名で施設を検索
+      final facilitySnapshot = await _firestore
+          .collection('facilities')
+          .where('stationRef', isEqualTo: stationRef)
+          .where('name', whereIn: facilityNames)
+          .get();
+
+      if (facilitySnapshot.docs.isEmpty) {
+        print('指定された駅の施設が見つかりません: $facilityNames');
+        return false;
+      }
+
+      // 施設のvoteを更新
+      WriteBatch batch = _firestore.batch();
+
+      for (var facilityDoc in facilitySnapshot.docs) {
+        final facilityData = facilityDoc.data();
+        final facilityName = facilityData['name'] as String;
+
+        // 対応するvote更新データを検索
+        final voteUpdate = voteUpdates.firstWhere(
+          (update) => update['facilityName'] == facilityName,
+          orElse: () => {'facilityName': facilityName, 'add_vote': 0},
+        );
+
+        final addVote = voteUpdate['add_vote'] as int;
+
+        // addVoteの値に応じて適切なフィールドを更新
+        Map<String, dynamic> updateData = {};
+        if (addVote == 1) {
+          updateData['vote_inside_gate'] =
+              (facilityData['vote_inside_gate'] ?? 0) + 1;
+        } else if (addVote == 2) {
+          updateData['vote_outside_gate'] =
+              (facilityData['vote_outside_gate'] ?? 0) + 1;
+        } else if (addVote == 3) {
+          updateData['vote_no'] = (facilityData['vote_no'] ?? 0) + 1;
+        }
+
+        if (updateData.isNotEmpty) {
+          batch.update(facilityDoc.reference, updateData);
+        }
+      }
+
+      await batch.commit();
+      print('投票数の更新が完了しました');
 
       return true;
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:eki_kuguru/models/register_station_model.dart';
+import 'package:eki_kuguru/service/station_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -52,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // firebase test code
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _messageController = TextEditingController();
+  final StationService _stationService = StationService();
   // messages stream
   Stream<QuerySnapshot>? _messagesStream;
   int _counter = 0;
@@ -167,7 +169,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 FloatingActionButton(
-                  onPressed: _incrementCounter,
+                  onPressed: () async {
+                    await _stationService.updateFacilityVote(
+                      stationName: "名古屋",
+                      voteUpdates: [
+                        {"facilityName": "toilet", "add_vote": 1}
+                      ],
+                    );
+                  },
                   tooltip: 'Increment',
                   child: const Icon(Icons.add),
                 ),
