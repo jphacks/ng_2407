@@ -81,6 +81,9 @@ class Facility {
       'facilityId': facilityId,
       'name': name,
       'state': state,
+      'vote_inside_gate': vote_inside_gate,
+      'vote_outside_gate': vote_outside_gate,
+      'vote_no': vote_no,
     };
   }
 }
