@@ -41,7 +41,7 @@ android {
         applicationId = "com.example.eki_kuguru"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
+        minSdk = 21
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
@@ -60,8 +60,12 @@ android {
 flutter {
     source = "../.."
 }
+
 dependencies {
     // Other dependencies
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'androidx.multidex:multidex:2.0.1'
 }
+
+apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
+
