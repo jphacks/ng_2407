@@ -18,6 +18,9 @@ class _LineStationState extends State<LineStationPage> {
   List<Station> stations = [];
   bool isLoading = false;
 
+  // serch
+  final TextEditingController _searchController = TextEditingController();
+
   // 路線のリスト（これはFirestoreから取得することも可能）
   final List<String> lines = [
     "太多線",
@@ -66,6 +69,56 @@ class _LineStationState extends State<LineStationPage> {
     _loadStations(selectedLine!);
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  // 駅名で検索する関数
+  Future<void> _searchStation(String stationName) async {
+    if (stationName.isEmpty) return;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final station = await _stationService.getStationbyName(stationName);
+
+      if (station != null) {
+        // 駅が見つかった場合、StationDetailPageに遷移
+        if (mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => StationDetailPage(station: station),
+            ),
+          );
+        }
+      } else {
+        // 駅が見つからなかった場合
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('該当する駅が見つかりませんでした')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('駅の検索中にエラーが発生しました: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
   Future<void> _loadStations(String lineName) async {
     setState(() {
       isLoading = true; // loading
@@ -91,6 +144,29 @@ class _LineStationState extends State<LineStationPage> {
       ),
       body: Column(
         children: [
+          // 検索バー
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: '駅名を入力してください',
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    _searchController.clear();
+                  },
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              onSubmitted: (value) {
+                _searchStation(value);
+              },
+            ),
+          ),
           // 路線選択用ドロップダウン
           Padding(
             padding: const EdgeInsets.all(16.0),

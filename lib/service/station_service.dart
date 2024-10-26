@@ -49,7 +49,28 @@ class StationService {
     }
   }
 
-  // 駅名から施設と路線情報を取得する
+  // 駅名から駅の情報を取得する(Stationを返す)
+  Future<Station?> getStationbyName(String stationName) async {
+    try {
+      final stationSnapshot = await _firestore
+          .collection('stations')
+          .where('name', isEqualTo: stationName)
+          .get();
+
+      if (stationSnapshot.docs.isEmpty) {
+        return null;
+      }
+
+      final stationDoc = stationSnapshot.docs.first;
+      return Station.fromMap(stationDoc.data() as Map<String, dynamic>,
+          stationDoc.id); // Stationを返す
+    } catch (e) {
+      print('エラーが発生しました: $e');
+      throw e;
+    }
+  }
+
+  // 駅名から施設と路線情報を取得する(StationDetailを返す)
   Future<StationDetail?> getStationDetailByName(String stationName) async {
     try {
       // 駅名から駅を検索
