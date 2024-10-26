@@ -429,4 +429,32 @@ class StationService {
       throw e;
     }
   }
+
+  // Stationを受け取ってトイレの情報を返す
+  Future<int?> getToiletState(Station station) async {
+    try {
+      // DocumentReferenceを直接作成
+      final stationRef =
+          _firestore.collection('stations').doc(station.stationId);
+
+      // トイレの施設情報のみを取得
+      final toiletSnapshot = await _firestore
+          .collection('facilities')
+          .where('stationRef', isEqualTo: stationRef)
+          .where('name', isEqualTo: 'toilet')
+          .limit(1) // トイレは1つのみ取得
+          .get();
+
+      // トイレが見つからない場合はnullを返す
+      if (toiletSnapshot.docs.isEmpty) {
+        return null;
+      }
+
+      // トイレのstateを返す
+      return toiletSnapshot.docs.first.data()['state'] as int;
+    } catch (e) {
+      print('トイレの状態取得中にエラーが発生しました: $e');
+      throw e;
+    }
+  }
 }
