@@ -36,9 +36,9 @@ class MyApp extends StatelessWidget {
         // home: const MapApp(),
         // home: const MainPage(),
         // home: TestPage(),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'));
-    // home: MyStationApp()
-    // home: MyTrainRoute());
+        // home: const MyHomePage(title: 'Flutter Demo Home Page'));
+        // home: MyStationApp()
+        home: MyTrainRoute());
   }
 }
 

@@ -23,6 +23,7 @@ class _LineStationState extends State<LineStationPage> {
 
   // 路線のリスト（これはFirestoreから取得することも可能）
   final List<String> lines = [
+    "愛環",
     "太多線",
     "瀬戸線",
     "三河線（知立～猿投）",
@@ -35,7 +36,6 @@ class _LineStationState extends State<LineStationPage> {
     "名城線",
     "名松線",
     "関西本線",
-    "愛環",
     "三河線（知立～碧南）",
     "西尾線",
     "蒲郡線",
