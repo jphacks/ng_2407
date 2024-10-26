@@ -104,6 +104,53 @@ class StationService {
     }
   }
 
+  // stationid, stationNameから施設と路線情報を取得する
+  Future<StationDetail?> getStationDetailBystationId(
+      String stationid, String stationName) async {
+    try {
+      DocumentReference stationRef =
+          _firestore.collection('stations').doc(stationid);
+
+      Station station = Station.fromIdName(stationName, stationid);
+      // 施設情報の取得
+      final facilitiesSnapshot = await _firestore
+          .collection('facilities')
+          .where('stationRef', isEqualTo: stationRef)
+          .get();
+
+      List<Facility> facilities = facilitiesSnapshot.docs
+          .map((doc) => Facility.fromMap(doc.data(), doc.id))
+          .toList();
+
+      // stationLinesから路線情報を取得
+      final stationLinesSnapshot = await _firestore
+          .collection('stationLines')
+          .where('stationRef', isEqualTo: stationRef)
+          .get();
+
+      List<Line> lines = [];
+      for (var stationLine in stationLinesSnapshot.docs) {
+        DocumentReference lineRef = stationLine.data()['lineRef'];
+        final lineDoc = await lineRef.get();
+        if (lineDoc.exists) {
+          lines.add(Line.fromMap(
+            lineDoc.data() as Map<String, dynamic>,
+            lineDoc.id,
+          ));
+        }
+      }
+
+      return StationDetail(
+        station: station,
+        facilities: facilities,
+        lines: lines,
+      );
+    } catch (e) {
+      print('エラーが発生しました: $e');
+      throw e;
+    }
+  }
+
   // 施設名から駅を検索する(駅のすべての情報を返す)
   Future<List<StationDetail>> getStationsByFacilityName(
       String facilityName) async {
