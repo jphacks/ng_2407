@@ -9,6 +9,8 @@ import 'header.dart';
 
 import 'testpage.dart';
 
+import 'stationWidget.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -31,7 +33,8 @@ class MyApp extends StatelessWidget {
       // home: const MapApp(),
       // home: const MainPage(),
       // home: TestPage(),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyStationApp()
     );
   }
 }
