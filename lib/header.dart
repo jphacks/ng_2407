@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:eki_kuguru/line_station.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget implements PreferredSizeWidget {
@@ -23,12 +24,12 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
               // タップ可能なウィジェット
               // 画像をタップしたときの処理(のちのち追加)
               onTap: () {
-                // // ページへの動的遷移
-                // Navigator.of(context).push(
-                //   // MaterialPageRoute(builder: (context) {
-                //   //   // return AddInfoPage(); // 駅詳細画面に遷移することを想定
-                //   // }),
-                // );
+                // ページへの動的遷移
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return LineStationPage(); // 駅詳細画面に遷移することを想定
+                  }),
+                );
               },
               child: SizedBox(
                 child: Card(
