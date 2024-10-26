@@ -30,11 +30,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // home: const MapApp(),
+      home: const MapApp(),
       // home: const MainPage(),
       // home: TestPage(),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: MyStationApp()
+      // home: MyStationApp(),
     );
   }
 }
@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
 
     return Scaffold(
-      appBar: Header(state: 0),
+      appBar: const Header(state: 0),
       body: Column(
         children: [
           Expanded(
