@@ -3,9 +3,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
 
 void main() async {
-    WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
-    await FlutterConfig.loadEnvVariables();
-    runApp(const MapApp());
+  // WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
+  // await FlutterConfig.loadEnvVariables();
+  // runApp(const MapApp());
 }
 
 class MapApp extends StatefulWidget {
