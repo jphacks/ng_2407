@@ -152,4 +152,44 @@ class DatabaseService {
       rethrow;
     }
   }
+
+  // facility　collecitionにvoteのnumを追加
+  Future<void> batchddVoteNumToFacilities() async {
+    try {
+      await _db.runTransaction((transaction) async {
+        final facilitiesSnapshot = await _db.collection('facilities').get();
+        print(
+            "facilitiesSnapshot.docs.length: ${facilitiesSnapshot.docs.length}");
+
+        final allDocs = facilitiesSnapshot.docs;
+        final int totalDocs = allDocs.length;
+        int processedDocs = 0;
+
+        // 500件ずつ処理
+        for (var i = 0; i < allDocs.length; i += 100) {
+          WriteBatch batch = _db.batch();
+
+          // 現在のバッチで処理する範囲を計算
+          final int end = (i + 100 < allDocs.length) ? i + 100 : allDocs.length;
+          final currentBatch = allDocs.sublist(i, end);
+
+          // バッチ更新を準備
+          for (var facilityDoc in currentBatch) {
+            batch.update(facilityDoc.reference,
+                {'vote_inside_gate': 0, 'vote_outside_gate': 0, 'vote_no': 0});
+          }
+
+          await batch.commit();
+          processedDocs = end;
+          print('${processedDocs}/${totalDocs} ドキュメントを処理しました');
+          // バッチ間で待機
+          await Future.delayed(Duration(milliseconds: 500));
+        }
+        print('投票数の追加が完了しました');
+      });
+    } catch (e) {
+      print('エラーが発生しました: $e');
+      rethrow;
+    }
+  }
 }
