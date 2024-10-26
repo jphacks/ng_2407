@@ -13,8 +13,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final dbService = DatabaseService();
-  await dbService.batchddVoteNumToFacilities();
   runApp(const MyApp());
 }
 
