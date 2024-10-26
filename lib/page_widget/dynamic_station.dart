@@ -18,21 +18,34 @@ class DynamicStationBox extends StatefulWidget {
 class _DynamicStationBoxState extends State<DynamicStationBox> {
   int? toiletState;
   final StationService _stationService = StationService();
+  bool _isDisposed = false;
 
   @override
   void initState() {
     super.initState();
+    _isDisposed = false;
     _loadToiletState();
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
   }
 
   Future<void> _loadToiletState() async {
     try {
-      final state = await _stationService.getToiletState(widget.station);
-      setState(() {
-        toiletState = state;
-      });
+      if (!_isDisposed) {
+        final state = await _stationService.getToiletState(widget.station);
+        // disposeされていない場合のみsetStateを呼び出す
+        setState(() {
+          toiletState = state;
+        });
+      }
     } catch (e) {
-      print('トイレの状態読み込み中にエラーが発生しました: $e');
+      if (!_isDisposed) {
+        print('トイレの状態読み込み中にエラーが発生しました: $e');
+      }
     }
   }
 
