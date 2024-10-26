@@ -13,6 +13,9 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPage extends State<SearchPage> {
   late GooglePlace googlePlace;
+
+  String stationName = ""; // 駅名を格納(データベース接続用)
+  AutocompletePrediction? searchValue; 
   List LatLng = []; // 経度と緯度を格納するための配列
   List<AutocompletePrediction> predictions = []; // predictionsに検索結果を格納
 
@@ -84,19 +87,23 @@ class _SearchPage extends State<SearchPage> {
                   shrinkWrap: true,
                   itemCount: predictions.length,
                   itemBuilder: (context, index) {
-                    return Card(
+                    return Card( // predictions/0/structuredFormatting 
                       child: ListTile(
                         title: Text(predictions[index].description.toString()),
                         onTap: () async { 
                           List? locations = await locationFromAddress(predictions[index].description.toString()); // locationFromAddress()に検索結果のpredictions[index].description.toString()を渡す
                           setState(() { // 取得した経度と緯度を配列に格納
-                            LatLng.add(locations.first.latitude);
-                            LatLng.add(locations.first.longitude);
+                            searchValue = predictions[index];
+                            if (searchValue!.structuredFormatting!.mainText.toString().contains("駅")){
+                              stationName = searchValue!.structuredFormatting!.mainText.toString();
+                              LatLng.add(locations.first.latitude);
+                              LatLng.add(locations.first.longitude);
+                            }
                           });
                           // Navigator.popで前の画面に戻るときに併せて経度と緯度を渡す。
                           Navigator.pop(
                             context,
-                            LatLng,
+                            [LatLng,stationName], // 経度と緯度を格納した配列と、駅名を渡す
                           );
                         },
                       ),

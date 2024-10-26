@@ -26,6 +26,7 @@ class _MapAppState extends State<MapApp> {
   late GoogleMapController _mapController;
   Position? currentPosition;
   late StreamSubscription<Position> positionStream;
+  Marker? marker;
 
   final LocationSettings locationSettings = const LocationSettings(
     accuracy: LocationAccuracy.high, //正確性:highはAndroid(0-100m),iOS(10m)
@@ -61,15 +62,27 @@ class _MapAppState extends State<MapApp> {
       ),
     ));
   }
-  Future<void> searchLocation(List result) async {
+  Future<void> searchLocation(List position, String name) async {
+    marker = null;
+    Marker stationMarker = Marker(
+      markerId: const MarkerId("station"),
+      position: LatLng(position[0], position[1]),
+      icon: BitmapDescriptor.defaultMarkerWithHue(25),
+      infoWindow: InfoWindow(title: name, snippet: "改札内：トイレ, 改札外：トイレ"),
+      // TODO:FireBaseから取得した設備情報を表示
+    );
+    setState(() {
+      marker = stationMarker;
+    });
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: LatLng(result[0], result[1]), // CameraPositionのtargetに経度・緯度の順で指定します。
+          target: LatLng(position[0], position[1]), // CameraPositionのtargetに経度・緯度の順で指定します。
           zoom: 15,
         )
       )
     );
+    _mapController.showMarkerInfoWindow(const MarkerId("station"));
   }
 
   @override
@@ -103,6 +116,7 @@ class _MapAppState extends State<MapApp> {
             },
             initialCameraPosition: initialCameraPosition,
             myLocationEnabled: true,
+            markers: marker != null ? {marker!} : {},
           ),Container(
             margin: const EdgeInsets.only(top: 6),
             height: 50,
@@ -117,7 +131,7 @@ class _MapAppState extends State<MapApp> {
                 ),
               ).then((value) async {
                 // valueに配列に格納された経度・緯度が格納されています
-                await searchLocation(value);
+                await searchLocation(value[0],value[1]);
               });
             },
             child:
