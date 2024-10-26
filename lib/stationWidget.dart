@@ -60,8 +60,8 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
 
     if (_stationDetail != null) {
       for (var facility in _stationDetail!.facilities) {
-        print(facility.name);
-        print(facility.state);
+        // print(facility.name);
+        // print(facility.state);
         switch (facility.state) {
           case 4: // 改札内、改札外両方ある
             insideFacilities.add(facility.name);
