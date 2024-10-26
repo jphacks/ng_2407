@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
       ),
       // home: const MapApp(),
       // home: const MainPage(),
-      // home: const MyHomePage(title:"test"),
-      home: TestPage(),
+      // home: TestPage(),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
 
     return Scaffold(
-      appBar: Header(state:0),
+      appBar: const Header(state:0),
       body: Column(
         children: [
           Expanded(
