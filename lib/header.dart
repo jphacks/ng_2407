@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:eki_kuguru/line_station.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget implements PreferredSizeWidget {
@@ -19,51 +20,53 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
         preferredSize: Size.fromHeight(50.0),
         child: Row(
           children: [
-              InkWell( // タップ可能なウィジェット
-                // 画像をタップしたときの処理(のちのち追加)
-                onTap: () {
-                  // // ページへの動的遷移
-                  // Navigator.of(context).push(
-                  //   // MaterialPageRoute(builder: (context) {
-                  //   //   // return AddInfoPage(); // 駅詳細画面に遷移することを想定
-                  //   // }),
-                  // );
-                },
-                child: SizedBox(
-                  child: Card(
-                    margin: const EdgeInsets.all(30),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    // clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: const Text("駅一覧から調べる"), // テキストを表示
+            InkWell(
+              // タップ可能なウィジェット
+              // 画像をタップしたときの処理(のちのち追加)
+              onTap: () {
+                // ページへの動的遷移
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return LineStationPage(); // 駅詳細画面に遷移することを想定
+                  }),
+                );
+              },
+              child: SizedBox(
+                child: Card(
+                  margin: const EdgeInsets.all(30),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
+                  // clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: const Text("駅一覧から調べる"), // テキストを表示
                 ),
               ),
-              InkWell( // タップ可能なウィジェット
-                // 画像をタップしたときの処理(のちのち追加)
-                onTap: () {
-                  // // ページへの動的遷移
-                  // Navigator.of(context).push(
-                  //   // MaterialPageRoute(builder: (context) {
-                  //   //   // return AddInfoPage(); // 駅詳細画面に遷移することを想定
-                  //   // }),
-                  // );
-                },
-                child: SizedBox(
-                  child: Card(
-                    margin: const EdgeInsets.all(30),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    // clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: const Text("地図から調べる"), // テキストを表示
+            ),
+            InkWell(
+              // タップ可能なウィジェット
+              // 画像をタップしたときの処理(のちのち追加)
+              onTap: () {
+                // // ページへの動的遷移
+                // Navigator.of(context).push(
+                //   // MaterialPageRoute(builder: (context) {
+                //   //   // return AddInfoPage(); // 駅詳細画面に遷移することを想定
+                //   // }),
+                // );
+              },
+              child: SizedBox(
+                child: Card(
+                  margin: const EdgeInsets.all(30),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
+                  // clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: const Text("地図から調べる"), // テキストを表示
+                ),
               ),
             ),
           ],
         ),
-      ), 
+      ),
     );
   }
 }
