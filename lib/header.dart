@@ -13,6 +13,8 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text('Header'),
+      centerTitle: true,
+      backgroundColor: Colors.green,
       bottom: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
         child: Row(
