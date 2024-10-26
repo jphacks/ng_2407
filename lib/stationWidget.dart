@@ -167,8 +167,8 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
                             endIndent: 30,
                             height: 10,
                           ),
-                          Flexible(
-                            // Columnの中でスクロール可能な領域を作るためにFlexibleを追加
+                          SizedBox(
+                            height: 100, // 高さを固定値で指定
                             child: SingleChildScrollView(
                               child: Wrap(
                                 spacing: 8.0,
@@ -220,8 +220,8 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
                             endIndent: 30,
                             height: 10,
                           ),
-                          Flexible(
-                            // Columnの中でスクロール可能な領域を作るためにFlexibleを追加
+                          SizedBox(
+                            height: 100, // 高さを固定値で指定
                             child: SingleChildScrollView(
                               child: Wrap(
                                 spacing: 8.0,

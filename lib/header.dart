@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:eki_kuguru/line_station.dart';
+import 'package:eki_kuguru/trainRoute.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget implements PreferredSizeWidget {
@@ -27,7 +28,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                 // ページへの動的遷移
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) {
-                    return LineStationPage(); // 駅詳細画面に遷移することを想定
+                    return MyTrainRoute(); // 駅詳細画面に遷移することを想定
                   }),
                 );
               },
