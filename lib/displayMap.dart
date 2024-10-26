@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'dart:async';
+
+import 'searchPage.dart';
+import 'header.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
@@ -26,6 +31,7 @@ class _MapAppState extends State<MapApp> {
     accuracy: LocationAccuracy.high, //正確性:highはAndroid(0-100m),iOS(10m)
     distanceFilter: 100,
   );
+  
 
   @override
   void initState() {
@@ -54,7 +60,17 @@ class _MapAppState extends State<MapApp> {
         zoom: 14,
       ),
     ));
-    }
+  }
+  Future<void> searchLocation(List result) async {
+    _mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(result[0], result[1]), // CameraPositionのtargetに経度・緯度の順で指定します。
+          zoom: 15,
+        )
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,30 +84,61 @@ class _MapAppState extends State<MapApp> {
             zoom: 14,
           );
 
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Maps Sample App'),
-          backgroundColor: Colors.green[700],
-        ),
-        body: GoogleMap(
-          mapType: MapType.normal,
-          onMapCreated: (GoogleMapController mapController) {
-            _mapController = mapController;
-            if (currentPosition != null) {
-              _mapController.animateCamera(CameraUpdate.newCameraPosition(
-                CameraPosition(
-                  target: LatLng(currentPosition!.latitude, currentPosition!.longitude),
-                  zoom: 14,
+    return Scaffold(
+      appBar: const Header(state: 0),
+      body: Stack(alignment: Alignment.topCenter,
+        children:[
+          GoogleMap(
+            mapType: MapType.normal,
+            onMapCreated: (GoogleMapController mapController) {
+              _mapController = mapController;
+              if (currentPosition != null) {
+                _mapController.animateCamera(CameraUpdate.newCameraPosition(
+                  CameraPosition(
+                    target: LatLng(currentPosition!.latitude, currentPosition!.longitude),
+                    zoom: 14,
+                  ),
+                ));
+              }
+            },
+            initialCameraPosition: initialCameraPosition,
+            myLocationEnabled: true,
+          ),Container(
+            margin: const EdgeInsets.only(top: 6),
+            height: 50,
+            width:300,
+            child:InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const SearchPage();
+                  },
                 ),
-              ));
-            }
-          },
-          initialCameraPosition: initialCameraPosition,
-          myLocationEnabled: true,
-        ),
-      ),
-    );
+              ).then((value) async {
+                // valueに配列に格納された経度・緯度が格納されています
+                await searchLocation(value);
+              });
+            },
+            child:
+              Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.only(right:20, left:20, top:5, bottom:5),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.black),
+                ),
+                child: const Row(children:[
+                  Icon(Icons.search),
+                  Text('駅を検索')],
+                ),
+              ),
+            ),
+          ),
+        ]),
+      );
   }
 
   @override

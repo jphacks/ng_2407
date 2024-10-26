@@ -2,6 +2,7 @@ import 'package:eki_kuguru/models/register_station_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'firebase_options.dart';
 import 'displayMap.dart';
 import 'generateWidget.dart';
@@ -11,8 +12,11 @@ import 'testpage.dart';
 
 import 'stationWidget.dart';
 
+import 'searchPage.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -35,6 +39,7 @@ class MyApp extends StatelessWidget {
       // home: TestPage(),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       // home: MyStationApp(),
+      // home: const SearchPage(),
     );
   }
 }
