@@ -37,12 +37,12 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           fontFamily: 'ZenMaru',
         ),
-        // home: const MapApp(),
-        // home: const MainPage(),
-        // home: TestPage(),
-        // home: const MyHomePage(title: 'Flutter Demo Home Page'));
-        // home: MyStationApp()
-        home: const MyTrainRoute());
+        // home: const MapApp(), //page1
+        // home: const MainPage(), //test
+        // home: const TestPage(), //test
+        // home: const MyHomePage(title: 'Flutter Demo Home Page')), // questionarie
+        home: const MyTrainRoute(), //page2
+        );
   }
 }
 
