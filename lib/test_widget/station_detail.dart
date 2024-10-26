@@ -71,26 +71,30 @@ class _StationDetailPageState extends State<StationDetailPage> {
       appBar: AppBar(
         title: Text(widget.station.name),
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _stationDetail == null
-              ? const Center(child: Text('情報を取得できませんでした'))
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 駅の基本情報
-                      _buildStationInfoCard(),
-                      const SizedBox(height: 20),
-                      // 路線情報
-                      _buildLinesSection(),
-                      const SizedBox(height: 20),
-                      // 施設情報
-                      _buildFacilitiesSection(),
-                    ],
-                  ),
-                ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 駅の基本情報（常に表示）
+            _buildStationInfoCard(),
+            const SizedBox(height: 20),
+
+            // 詳細情報（ローディング中は進捗表示）
+            if (_isLoading)
+              const Center(child: CircularProgressIndicator())
+            else if (_stationDetail == null)
+              const Center(child: Text('詳細情報を取得できませんでした'))
+            else ...[
+              // 路線情報
+              _buildLinesSection(),
+              const SizedBox(height: 20),
+              // 施設情報
+              _buildFacilitiesSection(),
+            ],
+          ],
+        ),
+      ),
     );
   }
 
