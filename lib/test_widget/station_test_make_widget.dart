@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:eki_kuguru/models/models.dart';
 import 'package:eki_kuguru/service/station_service.dart';
+import 'package:eki_kuguru/stationWidget.dart';
 import 'package:eki_kuguru/test_widget/station_detail.dart';
 import 'package:flutter/material.dart';
 
@@ -19,34 +20,6 @@ class StationTestMakeWidget extends StatefulWidget {
 class _StationTestMakeWidgetState extends State<StationTestMakeWidget> {
   final StationService _stationService = StationService();
 
-  // Future<void> _onStationTap(Station station) async {
-  //   try {
-  //     // 駅詳細情報を取得
-  //     final stationDetail = await _stationService.getStationDetailBystationId(
-  //         station.stationId, station.name);
-
-  //     if (stationDetail != null) {
-  //       // 駅詳細画面に遷移
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) =>
-  //               StationDetailPage(stationDetail: stationDetail),
-  //         ),
-  //       );
-  //     } else {
-  //       print('駅詳細の取得に失敗しました');
-  //     }
-  //   } catch (e) {
-  //     print('駅の詳細情報の取得に失敗しました: $e');
-  //     if (mounted) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('駅の詳細情報の取得に失敗しました: $e')),
-  //       );
-  //     }
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -56,7 +29,9 @@ class _StationTestMakeWidgetState extends State<StationTestMakeWidget> {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                StationDetailPage(station: widget.stationList[widget.index]),
+                StationInfoWidget(station: widget.stationList[widget.index]),
+            // pageBuilder: (context, animation, secondaryAnimation) =>
+            //     StationDetailPage(station: widget.stationList[widget.index]),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               const begin = Offset(1.0, 0.0);
