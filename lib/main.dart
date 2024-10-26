@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 import 'displayMap.dart';
 import 'generateWidget.dart';
 import 'header.dart';
+
+import 'testpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
       ),
       // home: const MapApp(),
       // home: const MainPage(),
-      home: const MyHomePage(title:"test"),
+      // home: const MyHomePage(title:"test"),
+      home: TestPage(),
     );
   }
 }
