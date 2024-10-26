@@ -10,6 +10,7 @@ import 'header.dart';
 import 'testpage.dart';
 
 import 'stationWidget.dart';
+import 'trainRoute.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
       // home: const MainPage(),
       // home: TestPage(),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: MyStationApp()
+      home: MyTrainRoute()
     );
   }
 }
