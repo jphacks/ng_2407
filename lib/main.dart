@@ -27,18 +27,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      // home: const MapApp(),
-      // home: const MainPage(),
-      // home: TestPage(),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      // home: MyStationApp()
-      home: MyTrainRoute()
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          fontFamily: 'ZenMaru',
+        ),
+        // home: const MapApp(),
+        // home: const MainPage(),
+        // home: TestPage(),
+        home: const MyHomePage(title: 'Flutter Demo Home Page'));
+    // home: MyStationApp()
+    // home: MyTrainRoute());
   }
 }
 
