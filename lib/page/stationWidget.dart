@@ -1,4 +1,4 @@
-import 'package:eki_kuguru/header.dart';
+import 'package:eki_kuguru/page_widget/header.dart';
 import 'package:eki_kuguru/models/models.dart';
 import 'package:eki_kuguru/service/station_service.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +7,9 @@ class StationInfoWidget extends StatefulWidget {
   final Station station;
 
   const StationInfoWidget({
-    Key? key,
+    super.key,
     required this.station,
-  }) : super(key: key);
+  });
 
   @override
   State<StationInfoWidget> createState() => _StationInfoWidgetState();
@@ -74,13 +74,13 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
             outsideFacilities.add(facility.name);
             break;
           case 1: // あり(情報求む)
-            otherFacilities.add('${facility.name}');
+            otherFacilities.add(facility.name);
             break;
           case 0: // わからない
-            unknownFacilities.add('${facility.name}');
+            unknownFacilities.add(facility.name);
             break;
           default: // なし
-            noFacilities.add('${facility.name}');
+            noFacilities.add(facility.name);
         }
       }
     }
@@ -312,7 +312,7 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
                                 style: const TextStyle(fontSize: 14),
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       ],
                     ),
@@ -369,7 +369,7 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
                                 style: const TextStyle(fontSize: 14),
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       ],
                     ),
@@ -434,7 +434,7 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
                                 style: const TextStyle(fontSize: 14),
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       ],
                     ),

@@ -5,16 +5,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'firebase_options.dart';
-import 'displayMap.dart';
-import 'generateWidget.dart';
-import 'header.dart';
+import 'page/displayMap.dart';
+import 'test_widget/test_generateWidget.dart';
+import 'page_widget/header.dart';
 
-import 'testpage.dart';
+import 'test_widget/testpage.dart';
 
-import 'stationWidget.dart';
-import 'trainRoute.dart';
+import 'page/stationWidget.dart';
+import 'page/trainRoute.dart';
 
-import 'searchPage.dart';
+import 'page/searchPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         // home: TestPage(),
         // home: const MyHomePage(title: 'Flutter Demo Home Page'));
         // home: MyStationApp()
-        home: MyTrainRoute());
+        home: const MyTrainRoute());
   }
 }
 

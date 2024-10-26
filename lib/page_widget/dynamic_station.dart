@@ -1,5 +1,5 @@
 import 'package:eki_kuguru/models/models.dart';
-import 'package:eki_kuguru/stationWidget.dart';
+import 'package:eki_kuguru/page/stationWidget.dart';
 import 'package:flutter/material.dart';
 
 class DynamicStationBox extends StatelessWidget {
@@ -7,8 +7,8 @@ class DynamicStationBox extends StatelessWidget {
 
   const DynamicStationBox({
     required this.station,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

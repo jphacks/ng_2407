@@ -6,7 +6,7 @@ import 'package:geocoding/geocoding.dart';
 import 'dart:async';
 
 import 'searchPage.dart';
-import 'header.dart';
+import '../page_widget/header.dart';
 
 
 void main() async {

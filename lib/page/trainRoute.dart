@@ -1,8 +1,8 @@
-import 'package:eki_kuguru/header.dart';
+import 'package:eki_kuguru/page_widget/header.dart';
 import 'package:eki_kuguru/models/models.dart';
 import 'package:eki_kuguru/page_widget/dynamic_station.dart';
 import 'package:eki_kuguru/service/station_service.dart';
-import 'package:eki_kuguru/stationWidget.dart';
+import 'package:eki_kuguru/page/stationWidget.dart';
 import 'package:eki_kuguru/test_widget/station_detail.dart';
 import 'package:flutter/material.dart';
 
@@ -157,14 +157,14 @@ class _MyTrainRoute extends State<MyTrainRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header(state: 0),
+      appBar: const Header(state: 0),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
               "全駅から検索",
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ),
           Divider(
@@ -206,11 +206,11 @@ class _MyTrainRoute extends State<MyTrainRoute> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
               "路線から検索",
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ),
           Divider(
@@ -287,7 +287,7 @@ class _MyTrainRoute extends State<MyTrainRoute> {
                                   station: stations[index ~/ 2],
                                 );
                               } else {
-                                return VerticalDividerLine();
+                                return const VerticalDividerLine();
                               }
                             }),
                           ),
@@ -301,7 +301,7 @@ class _MyTrainRoute extends State<MyTrainRoute> {
             endIndent: 40,
             height: 5,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ],
       ),
     );
@@ -309,6 +309,8 @@ class _MyTrainRoute extends State<MyTrainRoute> {
 }
 
 class VerticalDividerLine extends StatelessWidget {
+  const VerticalDividerLine({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

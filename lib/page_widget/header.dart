@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:eki_kuguru/line_station.dart';
+import 'package:eki_kuguru/service/line_station.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget implements PreferredSizeWidget {
@@ -8,7 +8,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   const Header({super.key, required this.state}); // 引数の指定
 
   @override
-  Size get preferredSize => Size.fromHeight(100.0); // AppBarの高さを指定
+  Size get preferredSize => const Size.fromHeight(100.0); // AppBarの高さを指定
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       backgroundColor: Colors.green,
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(50.0),
+        preferredSize: const Size.fromHeight(50.0),
         child: Row(
           children: [
             InkWell(
@@ -27,7 +27,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                 // ページへの動的遷移
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) {
-                    return LineStationPage(); // 駅詳細画面に遷移することを想定
+                    return const LineStationPage(); // 駅詳細画面に遷移することを想定
                   }),
                 );
               },
