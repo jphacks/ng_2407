@@ -1,4 +1,5 @@
 import 'package:eki_kuguru/models/register_station_model.dart';
+import 'package:eki_kuguru/service/station_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +12,7 @@ import 'header.dart';
 import 'testpage.dart';
 
 import 'stationWidget.dart';
+import 'trainRoute.dart';
 
 import 'searchPage.dart';
 
@@ -29,18 +31,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MapApp(),
-      // home: const MainPage(),
-      // home: TestPage(),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      // home: MyStationApp(),
-      // home: const SearchPage(),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          fontFamily: 'ZenMaru',
+        ),
+        // home: const MapApp(),
+        // home: const MainPage(),
+        // home: TestPage(),
+        // home: const MyHomePage(title: 'Flutter Demo Home Page'));
+        // home: MyStationApp()
+        home: MyTrainRoute());
   }
 }
 
@@ -57,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // firebase test code
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _messageController = TextEditingController();
+  final StationService _stationService = StationService();
   // messages stream
   Stream<QuerySnapshot>? _messagesStream;
   int _counter = 0;
@@ -172,7 +175,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 FloatingActionButton(
-                  onPressed: _incrementCounter,
+                  onPressed: () async {
+                    await _stationService.updateFacilityVote(
+                      stationName: "名古屋",
+                      voteUpdates: [
+                        {"facilityName": "toilet", "add_vote": 1}
+                      ],
+                    );
+                  },
                   tooltip: 'Increment',
                   child: const Icon(Icons.add),
                 ),
