@@ -3,6 +3,7 @@ import 'package:eki_kuguru/service/station_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'firebase_options.dart';
 import 'displayMap.dart';
 import 'generateWidget.dart';
@@ -13,8 +14,11 @@ import 'testpage.dart';
 import 'stationWidget.dart';
 import 'trainRoute.dart';
 
+import 'searchPage.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -108,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
 
     return Scaffold(
-      appBar: Header(state: 0),
+      appBar: const Header(state: 0),
       body: Column(
         children: [
           Expanded(
