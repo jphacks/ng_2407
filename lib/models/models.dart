@@ -8,6 +8,12 @@ class Station {
     required this.name,
   });
 
+  factory Station.fromIdName(String name, String id) {
+    return Station(
+      stationId: id,
+      name: name ?? '',
+    );
+  }
   factory Station.fromMap(Map<String, dynamic> map, String id) {
     return Station(
       stationId: id,
@@ -46,11 +52,17 @@ class Facility {
   final String facilityId;
   final String name;
   final int state;
+  final int vote_inside_gate;
+  final int vote_outside_gate;
+  final int vote_no;
 
   Facility({
     required this.facilityId,
     required this.name,
     required this.state,
+    required this.vote_inside_gate,
+    required this.vote_outside_gate,
+    required this.vote_no,
   });
 
   factory Facility.fromMap(Map<String, dynamic> map, String id) {
@@ -58,6 +70,9 @@ class Facility {
       facilityId: id,
       name: map['name'] ?? '',
       state: map['state'] ?? 0,
+      vote_inside_gate: map['vote_inside_gate'] ?? 0,
+      vote_outside_gate: map['vote_outside_gate'] ?? 0,
+      vote_no: map['vote_no'] ?? 0,
     );
   }
 
