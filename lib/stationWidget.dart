@@ -63,6 +63,10 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
         print(facility.name);
         print(facility.state);
         switch (facility.state) {
+          case 4: // 改札内、改札外両方ある
+            insideFacilities.add(facility.name);
+            outsideFacilities.add(facility.name);
+            break;
           case 2: // 改札内
             insideFacilities.add(facility.name);
             break;
@@ -163,31 +167,41 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
                             endIndent: 30,
                             height: 10,
                           ),
-                          Wrap(
-                            spacing: 8.0,
-                            runSpacing: 8.0,
-                            alignment: WrapAlignment.center,
-                            children: (_getFacilitiesByState()['inside'] ?? [])
-                                .map((facility) => Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 2),
-                                      margin: const EdgeInsets.all(2),
-                                      decoration: BoxDecoration(
-                                        color: Colors.green[50],
-                                        borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(
-                                            color: Colors.green[200]!),
-                                      ),
-                                      child: Text(
-                                        facilityNameMap[facility] ?? facility,
-                                        style: const TextStyle(fontSize: 14),
-                                      ),
-                                    ))
-                                .toList(),
+                          Flexible(
+                            // Columnの中でスクロール可能な領域を作るためにFlexibleを追加
+                            child: SingleChildScrollView(
+                              child: Wrap(
+                                spacing: 8.0,
+                                runSpacing: 8.0,
+                                alignment: WrapAlignment.center,
+                                children: (_getFacilitiesByState()['inside'] ??
+                                        [])
+                                    .map((facility) => Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 2),
+                                          margin: const EdgeInsets.all(2),
+                                          decoration: BoxDecoration(
+                                            color: Colors.green[50],
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            border: Border.all(
+                                                color: Colors.green[200]!),
+                                          ),
+                                          child: Text(
+                                            facilityNameMap[facility] ??
+                                                facility,
+                                            style:
+                                                const TextStyle(fontSize: 14),
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
                           ),
                         ],
                       ),
                     ),
+
                     // 改札外
                     Expanded(
                       child: Column(
@@ -206,34 +220,43 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
                             endIndent: 30,
                             height: 10,
                           ),
-                          Wrap(
-                            spacing: 8.0,
-                            runSpacing: 8.0,
-                            alignment: WrapAlignment.center,
-                            children: (_getFacilitiesByState()['outside'] ?? [])
-                                .map((facility) => Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 2),
-                                      margin: const EdgeInsets.all(2),
-                                      decoration: BoxDecoration(
-                                        color: Colors.green[50],
-                                        borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(
-                                            color: Colors.green[200]!),
-                                      ),
-                                      child: Text(
-                                        facilityNameMap[facility] ?? facility,
-                                        style: const TextStyle(fontSize: 14),
-                                      ),
-                                    ))
-                                .toList(),
+                          Flexible(
+                            // Columnの中でスクロール可能な領域を作るためにFlexibleを追加
+                            child: SingleChildScrollView(
+                              child: Wrap(
+                                spacing: 8.0,
+                                runSpacing: 8.0,
+                                alignment: WrapAlignment.center,
+                                children: (_getFacilitiesByState()['outside'] ??
+                                        [])
+                                    .map((facility) => Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 2),
+                                          margin: const EdgeInsets.all(2),
+                                          decoration: BoxDecoration(
+                                            color: Colors.green[50],
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            border: Border.all(
+                                                color: Colors.green[200]!),
+                                          ),
+                                          child: Text(
+                                            facilityNameMap[facility] ??
+                                                facility,
+                                            style:
+                                                const TextStyle(fontSize: 14),
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ],
                 ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Expanded(
             child: Column(
               children: [
@@ -342,7 +365,7 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
                                 border: Border.all(color: Colors.grey[300]!),
                               ),
                               child: Text(
-                                '$japaneseText（なし）',
+                                '$japaneseText',
                                 style: const TextStyle(fontSize: 14),
                               ),
                             );
