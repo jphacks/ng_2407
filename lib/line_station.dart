@@ -14,6 +14,7 @@ class _LineStationState extends State<LineStationPage> {
   final StationService _stationService = StationService();
   String? selectedLine;
   List<Station> stations = [];
+  bool isLoading = false;
 
   // 路線のリスト（これはFirestoreから取得することも可能）
   final List<String> lines = [
@@ -64,11 +65,15 @@ class _LineStationState extends State<LineStationPage> {
   }
 
   Future<void> _loadStations(String lineName) async {
+    setState(() {
+      isLoading = true; // loading
+    });
     try {
       final stationsList =
           await _stationService.getStationsByLineName(lineName);
       setState(() {
         stations = stationsList;
+        isLoading = false;
       });
     } catch (e) {
       print('駅の取得に失敗しました: $e');
@@ -108,21 +113,32 @@ class _LineStationState extends State<LineStationPage> {
           ),
           // 駅のグリッド表示
           Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 5,
-                childAspectRatio: 0.8,
-              ),
-              itemCount: stations.length,
-              itemBuilder: (context, index) {
-                return MakeWidget(
-                  index: index,
-                  stationList: stations.map((s) => s.name).toList(),
-                );
-              },
-            ),
+            child: isLoading
+                ? const Center(
+                    // loading
+                    child: CircularProgressIndicator(),
+                  )
+                : stations.isEmpty
+                    ? const Center(
+                        // データが空の場合の表示
+                        child: Text('駅が見つかりません'),
+                      )
+                    : GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 5,
+                          childAspectRatio: 0.8,
+                        ),
+                        itemCount: stations.length,
+                        itemBuilder: (context, index) {
+                          return MakeWidget(
+                            index: index,
+                            stationList: stations.map((s) => s.name).toList(),
+                          );
+                        },
+                      ),
           ),
         ],
       ),
