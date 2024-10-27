@@ -29,7 +29,6 @@ class _QuestionarieState extends State<Questionarie> {
       setState(() {
         _currentQuestionIndex++;
       });
-      return; // わからない場合は投票せずに次の質問へ
     }
 
     bool success = await service.updateFacilityVote(
