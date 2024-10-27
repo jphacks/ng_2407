@@ -178,13 +178,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () async {
                     // 1. vote_inside_gate, 2. vote_outside_gate, 3. vote_no, 4. vote_both
                     await _stationService.updateFacilityVote(
-                      stationName: "名古屋",
+                      stationName: "岡崎",
                       voteUpdates: [
                         {"facilityName": "toilet", "add_vote": 4},
-                        {
-                          "facilityName": "wheelchair_accessible_elevator",
-                          "add_vote": 4
-                        },
+                        {"facilityName": "multi_purpose_toilet", "add_vote": 4},
                         {"facilityName": "guidance_blocks", "add_vote": 4},
                       ],
                     );

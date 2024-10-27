@@ -13,18 +13,6 @@ class MyTrainRoute extends StatefulWidget {
   _MyTrainRoute createState() => _MyTrainRoute();
 }
 
-// class MyTrainRoute extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(title: Text("駅情報")),
-//         body: TrainRouteWidget(),
-//       ),
-//     );
-//   }
-// }
-
 class _MyTrainRoute extends State<MyTrainRoute> {
   final StationService _stationService = StationService();
   String? selectedLine;
