@@ -2,6 +2,7 @@ import 'package:eki_kuguru/header.dart';
 import 'package:eki_kuguru/models/models.dart';
 import 'package:eki_kuguru/service/station_service.dart';
 import 'package:flutter/material.dart';
+import 'questionariePage.dart';
 
 class StationInfoWidget extends StatefulWidget {
   final Station station;
@@ -449,8 +450,43 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
       (_isVisible)?Align(
         alignment: Alignment.bottomRight,
         child: InkWell(
-          onTap: () {
-            Navigator.of(context).pop();
+          onTap: () async {
+            final facilitiesByState = _getFacilitiesByState();
+            final facilitiesOt = facilitiesByState['other'] ?? [];
+            final facilitiesUn = facilitiesByState['unknown'] ?? [];
+            
+            List<String> facilityNamesOt = [];
+            List<String> facilityNamesUn = [];
+            
+            if (facilitiesOt.isNotEmpty) {
+              facilityNamesOt = facilitiesOt.map((facility) {
+                return facilityNameMap[facility] ?? '不明な施設';
+              }).toList();
+            }
+            
+            if (facilitiesUn.isNotEmpty) {
+              facilityNamesUn = facilitiesUn.map((facility) {
+                return facilityNameMap[facility] ?? '不明な施設';
+              }).toList();
+            }
+            
+            List<List<String>> facilitiesJP = [
+              facilityNamesOt,
+              facilityNamesUn,
+            ];
+            List<List<String>> facilitiesName = [
+              facilitiesOt,
+              facilitiesUn,
+            ];
+            
+            
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Questionarie(
+                stationName: widget.station.name,
+                questions: facilitiesJP,
+                id: facilitiesName,
+              ),
+            ));
           },
           child: Container(
             padding: const EdgeInsets.all(8),
