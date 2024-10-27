@@ -20,25 +20,38 @@ class _QuestionarieState extends State<Questionarie> {
 
   StationService service = StationService();
 
-  void _onRadioChanged(int value) {
-    setState(() async {
-      if (value == -1) {
+  void _onRadioChanged(int value) async {
+    if (value == -1) {
+      setState(() {
         _currentQuestionIndex++;
-      }
-      await service.updateFacilityVote(
-        stationName: widget.stationName,
-        voteUpdates: [
-          {widget.id[_currentQuestionIndex % 2][_currentQuestionIndex % 2]: value}
-        ],
-      );
-      // response.add([{widget.id[_currentQuestionIndex % 2][_currentQuestionIndex % 2]: value}]);
+      });
+    }
 
-      if (_currentQuestionIndex < widget.questions.length - 1) {
-        _currentQuestionIndex++;
-      } else {
-        Navigator.of(context).pop();
-      }
-    });
+    bool success = await service.updateFacilityVote(
+      stationName: widget.stationName,
+      voteUpdates: [
+        {widget.id[_currentQuestionIndex % 2][_currentQuestionIndex % 2]: value}
+      ],
+    );
+
+    if (success) {
+      setState(() {
+        response.add([
+          {widget.id[_currentQuestionIndex % 2][_currentQuestionIndex % 2]: value}
+        ]);
+
+        if (_currentQuestionIndex < widget.questions.length - 1) {
+          _currentQuestionIndex++;
+        } else {
+          Navigator.of(context).pop();
+        }
+      });
+    } else {
+      // エラーハンドリング
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('投票の更新に失敗しました。')),
+      );
+    }
   }
 
   @override

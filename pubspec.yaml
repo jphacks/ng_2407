@@ -43,6 +43,7 @@ dependencies:
   geolocator: ^8.2.0
   google_place: ^0.4.7
   geocoding: ^3.0.0
+  flutter_launcher_icons: ^0.14.1
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +55,18 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+
+# flutter_icons:       
+#   android: true
+#   ios: true
+#   image_path: "assets/logo_images.png"
+flutter_launcher_icons:
+  android: true 
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/logo_image.png"
+  adaptive_icon_background: "#ffffff" # 背景色を白に設定
+  adaptive_icon_foreground: "assets/logo_image.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -70,6 +83,8 @@ flutter:
   assets:
     - assets/add_station_number.json
     - assets/lines.json
+    - assets/logo_image.png
+    - assets/logo_text.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -94,6 +109,10 @@ flutter:
         - asset: assets/fonts/ZenMaru/ZenMaruGothic-Medium.ttf
           weight: 500
         - asset: assets/fonts/ZenMaru/ZenMaruGothic-Regular.ttf
+          weight: 400
+    - family : TrainOne
+      fonts:
+        - asset: assets/fonts/TrainOne/TrainOne-Regular.ttf
           weight: 400
          
     # - family: Trajan Pro
