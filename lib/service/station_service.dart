@@ -64,8 +64,7 @@ class StationService {
       }
 
       final stationDoc = stationSnapshot.docs.first;
-      return Station.fromMap(stationDoc.data(),
-          stationDoc.id); // Stationを返す
+      return Station.fromMap(stationDoc.data(), stationDoc.id); // Stationを返す
     } catch (e) {
       print('エラーが発生しました: $e');
       rethrow;

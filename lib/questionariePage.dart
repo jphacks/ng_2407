@@ -24,12 +24,31 @@ class _QuestionarieState extends State<Questionarie> {
 
   StationService service = StationService();
 
-  void _onRadioChanged(int value) async {
-    if (value == -1) {
-      setState(() {
-        _currentQuestionIndex++;
+  @override
+  void initState() {
+    super.initState();
+    // 質問データの検証
+    if (widget.questions.isEmpty || widget.id.isEmpty) {
+      // 質問がない場合は前の画面に戻る
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pop();
       });
-      return; // わからない場合は投票せずに次の質問へ
+    }
+  }
+
+  void _onRadioChanged(int value) async {
+    if (_currentQuestionIndex >= widget.questions[0].length) {
+      Navigator.of(context).pop();
+      return;
+    }
+    if (value == -1) {
+      if (mounted) {
+        // mountedチェックを追加
+        setState(() {
+          _currentQuestionIndex++;
+        });
+      }
+      // return;
     }
 
     bool success = await service.updateFacilityVote(
@@ -43,6 +62,8 @@ class _QuestionarieState extends State<Questionarie> {
       ],
     );
 
+    // mountedチェックを追加
+    if (!mounted) return;
     if (success) {
       setState(() {
         response.add([
@@ -59,15 +80,44 @@ class _QuestionarieState extends State<Questionarie> {
         }
       });
     } else {
-      // エラーハンドリング
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('投票の更新に失敗しました。')),
-      );
+      if (mounted) {
+        // mountedチェックを追加
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('投票の更新に失敗しました。')),
+        );
+      }
     }
+  }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // 配列が空でないことを確認
+  //   if (widget.questions.isEmpty || widget.questions[0].isEmpty) {
+  //     throw Exception('Questions array cannot be empty');
+  //   }
+  // }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // 配列の境界チェックを追加
+    if (_currentQuestionIndex >= widget.questions[0].length) {
+      print("Questionnaire finished");
+      Navigator.of(context).pop();
+      // return Container(); // または適切なエラー表示
+    }
+
+    // ビルド時にチェックを行う
+    if (widget.questions.isEmpty) {
+      print("Questions array cannot be empty");
+      Navigator.of(context).pop();
+      // return Container();
+    }
     return Scaffold(
       body: Center(
         child: Container(
