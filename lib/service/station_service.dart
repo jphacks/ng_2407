@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eki_kuguru/models/models.dart';
 
@@ -285,7 +287,7 @@ class StationService {
   }
 
   // 施設のvoteを更新する
-  // 1. vote_inside_gate, 2. vote_outside_gate, 3. vote_no
+  // 1. vote_inside_gate, 2. vote_outside_gate, 3. vote_no, 4. vote_both
   // 期待する入力
   // [{
   //   "facilityName": str,
@@ -333,6 +335,7 @@ class StationService {
       for (var facilityDoc in facilitySnapshot.docs) {
         final facilityData = facilityDoc.data();
         final facilityName = facilityData['name'] as String;
+        final currentState = facilityData['state'] as int;
 
         // 対応するvote更新データを検索
         final voteUpdate = voteUpdates.firstWhere(
@@ -342,21 +345,79 @@ class StationService {
 
         final addVote = voteUpdate['add_vote'] as int;
 
+        // 現在の投票数を取得
+        int voteInsideGate = facilityData['vote_inside_gate'] ?? 0;
+        int voteOutsideGate = facilityData['vote_outside_gate'] ?? 0;
+        int voteNo = facilityData['vote_no'] ?? 0;
+        int voteBoth = facilityData['vote_both'] ?? 0;
+
         // addVoteの値に応じて適切なフィールドを更新
         Map<String, dynamic> updateData = {};
         if (addVote == 1) {
-          updateData['vote_inside_gate'] =
-              (facilityData['vote_inside_gate'] ?? 0) + 1;
+          voteInsideGate += 1;
+          updateData['vote_inside_gate'] = voteInsideGate;
         } else if (addVote == 2) {
-          updateData['vote_outside_gate'] =
-              (facilityData['vote_outside_gate'] ?? 0) + 1;
+          voteOutsideGate += 1;
+          updateData['vote_outside_gate'] = voteOutsideGate;
         } else if (addVote == 3) {
-          updateData['vote_no'] = (facilityData['vote_no'] ?? 0) + 1;
+          voteNo += 1;
+          updateData['vote_no'] = voteNo;
+        } else if (addVote == 4) {
+          voteBoth += 1;
+          updateData['vote_both'] = voteBoth;
         }
 
-        if (updateData.isNotEmpty) {
-          batch.update(facilityDoc.reference, updateData);
+        // 投票結果に基づいてstateを決定
+        int newState = -1;
+        List<int> votes = [voteInsideGate, voteOutsideGate, voteNo, voteBoth];
+        int maxVotes = votes.reduce(max);
+
+        // 最大票数を持つ選択肢の数を数える
+        List<int> maxIndices = [];
+        for (int i = 0; i < votes.length; i++) {
+          if (votes[i] == maxVotes) {
+            maxIndices.add(i);
+          }
         }
+
+        // 同票の組み合わせに基づいてstateを設定
+        if (maxIndices.length == 1) {
+          // 一つの選択肢が最大の場合
+          if (maxVotes == voteInsideGate)
+            newState = 2;
+          else if (maxVotes == voteOutsideGate)
+            newState = 3;
+          else if (maxVotes == voteNo)
+            newState = 0;
+          else if (maxVotes == voteBoth) newState = 4;
+        } else if (maxIndices.length == 2) {
+          // 2つの選択肢が同票の場合
+          if (voteInsideGate == voteOutsideGate && voteInsideGate == maxVotes) {
+            newState = 1;
+          } else if (voteOutsideGate == voteBoth &&
+              voteOutsideGate == maxVotes) {
+            newState = 3;
+          } else if (voteInsideGate == voteBoth && voteInsideGate == maxVotes) {
+            newState = 2;
+          } else {
+            newState = (currentState == 1) ? 1 : -1;
+          }
+        } else if (maxIndices.length == 3) {
+          // 3つの選択肢が同票の場合
+          if (voteInsideGate == voteOutsideGate &&
+              voteOutsideGate == voteBoth &&
+              voteInsideGate == maxVotes) {
+            newState = 4;
+          } else {
+            newState = (currentState == 1) ? 1 : -1;
+          }
+        } else {
+          // その他の場合
+          newState = (currentState == 1) ? 1 : -1;
+        }
+
+        updateData['state'] = newState;
+        batch.update(facilityDoc.reference, updateData);
       }
 
       await batch.commit();

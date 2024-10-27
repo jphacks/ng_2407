@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
         // home: const MapApp(),
         // home: const MainPage(),
         // home: TestPage(),
-        // home: const MyHomePage(title: 'Flutter Demo Home Page'));
-        // home: MyStationApp()
-        home: MyTrainRoute());
+        home: const MyHomePage(title: 'Flutter Demo Home Page'));
+    // home: MyStationApp()
+    // home: MyTrainRoute());
   }
 }
 
@@ -176,10 +176,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 FloatingActionButton(
                   onPressed: () async {
+                    // 1. vote_inside_gate, 2. vote_outside_gate, 3. vote_no, 4. vote_both
                     await _stationService.updateFacilityVote(
                       stationName: "名古屋",
                       voteUpdates: [
-                        {"facilityName": "toilet", "add_vote": 1}
+                        {"facilityName": "toilet", "add_vote": 4},
+                        {
+                          "facilityName": "wheelchair_accessible_elevator",
+                          "add_vote": 4
+                        },
+                        {"facilityName": "guidance_blocks", "add_vote": 4},
                       ],
                     );
                   },
