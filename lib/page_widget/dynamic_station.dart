@@ -66,7 +66,7 @@ class _DynamicStationBoxState extends State<DynamicStationBox> {
                 ),
                 const Icon(
                   Icons.wc,
-                  size: 20.0,
+                  size: 19.0,
                   color: Colors.grey,
                 ),
               ],
