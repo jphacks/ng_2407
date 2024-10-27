@@ -25,6 +25,10 @@ class _QuestionarieState extends State<Questionarie> {
   StationService service = StationService();
 
   void _onRadioChanged(int value) async {
+    if (_currentQuestionIndex >= widget.questions[0].length) {
+      Navigator.of(context).pop();
+      return;
+    }
     if (value == -1) {
       setState(() {
         _currentQuestionIndex++;
@@ -66,8 +70,35 @@ class _QuestionarieState extends State<Questionarie> {
     }
   }
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // 配列が空でないことを確認
+  //   if (widget.questions.isEmpty || widget.questions[0].isEmpty) {
+  //     throw Exception('Questions array cannot be empty');
+  //   }
+  // }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // 配列の境界チェックを追加
+    if (_currentQuestionIndex >= widget.questions[0].length) {
+      print("Questionnaire finished");
+      Navigator.of(context).pop();
+      // return Container(); // または適切なエラー表示
+    }
+
+    // ビルド時にチェックを行う
+    if (widget.questions.isEmpty) {
+      print("Questions array cannot be empty");
+      Navigator.of(context).pop();
+      // return Container();
+    }
     return Scaffold(
       body: Center(
         child: Container(
