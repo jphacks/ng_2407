@@ -42,11 +42,40 @@ class MyApp extends StatelessWidget {
         // home: const MainPage(),
         // home: TestPage(),
         // home: const MyHomePage(title: 'Flutter Demo Home Page'));
-        // home: MyStationApp()
-        home: MyTrainRoute());
+    // home: MyStationApp()
+    // home: MyTrainRoute());
     // home: MyTopScreen());
+    home: const InitialScreen());
   }
 }
+
+// 3秒後に画面遷移追加
+
+class InitialScreen extends StatefulWidget {
+  const InitialScreen({super.key});
+
+  @override
+  State<InitialScreen> createState() => _InitialScreenState();
+}
+
+class _InitialScreenState extends State<InitialScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MapApp()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyTopScreen();
+  }
+}
+
+// 3秒後に画面遷移追加終わり
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
