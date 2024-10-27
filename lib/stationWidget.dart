@@ -7,9 +7,9 @@ class StationInfoWidget extends StatefulWidget {
   final Station station;
 
   const StationInfoWidget({
-    Key? key,
+    super.key,
     required this.station,
-  }) : super(key: key);
+  });
 
   @override
   State<StationInfoWidget> createState() => _StationInfoWidgetState();
@@ -19,6 +19,7 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
   final StationService _stationService = StationService();
   StationDetail? _stationDetail;
   bool _isLoading = true;
+  bool _isVisible = true;
 
   @override
   void initState() {
@@ -74,13 +75,13 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
             outsideFacilities.add(facility.name);
             break;
           case 1: // あり(情報求む)
-            otherFacilities.add('${facility.name}');
+            otherFacilities.add(facility.name);
             break;
           case 0: // わからない
-            unknownFacilities.add('${facility.name}');
+            unknownFacilities.add(facility.name);
             break;
           default: // なし
-            noFacilities.add('${facility.name}');
+            noFacilities.add(facility.name);
         }
       }
     }
@@ -123,7 +124,7 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const Header(state: 0),
-      body: Column(
+      body: Stack(alignment:const Alignment(1, 1),children:[Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // 駅駅
@@ -312,7 +313,7 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
                                 style: const TextStyle(fontSize: 14),
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       ],
                     ),
@@ -369,7 +370,7 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
                                 style: const TextStyle(fontSize: 14),
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       ],
                     ),
@@ -434,7 +435,7 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
                                 style: const TextStyle(fontSize: 14),
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       ],
                     ),
@@ -444,6 +445,64 @@ class _StationInfoWidgetState extends State<StationInfoWidget> {
             ),
           ),
         ],
+      ),
+      (_isVisible)?Align(
+        alignment: Alignment.bottomRight,
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.only(bottom: 20, right: 20),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height:15),
+                Icon(
+                  Icons.question_mark,
+                  color: Colors.white,
+                ),
+                SizedBox(height: 15), // アイコンとテキストの間にスペースを追加
+                Text(
+                  '情報を追加する',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ):Align(
+        alignment: Alignment.bottomRight,
+        child: Container(),
+      ),
+      (_isVisible)?InkWell(
+        onTap: () {
+          setState((){
+            _isVisible = false;
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          margin: const EdgeInsets.only(bottom: 90, right: 10),
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child:const Icon(
+            Icons.close,
+            color: Colors.white,
+          ),
+        ),
+      ):Container(),
+      ]
       ),
     );
   }
