@@ -70,6 +70,8 @@ flutter:
   assets:
     - assets/add_station_number.json
     - assets/lines.json
+    - assets/logo_image.png
+    - assets/logo_text.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
