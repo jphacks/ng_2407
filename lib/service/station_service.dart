@@ -47,7 +47,7 @@ class StationService {
       return stations;
     } catch (e) {
       print('エラーが発生しました: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -64,11 +64,11 @@ class StationService {
       }
 
       final stationDoc = stationSnapshot.docs.first;
-      return Station.fromMap(stationDoc.data() as Map<String, dynamic>,
+      return Station.fromMap(stationDoc.data(),
           stationDoc.id); // Stationを返す
     } catch (e) {
       print('エラーが発生しました: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -123,7 +123,7 @@ class StationService {
       );
     } catch (e) {
       print('エラーが発生しました: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -170,7 +170,7 @@ class StationService {
       );
     } catch (e) {
       print('エラーが発生しました: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -235,7 +235,7 @@ class StationService {
       return stations;
     } catch (e) {
       print('エラーが発生しました: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -282,7 +282,7 @@ class StationService {
       return true;
     } catch (e) {
       print('エラーが発生しました: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -426,7 +426,7 @@ class StationService {
       return true;
     } catch (e) {
       print('エラーが発生しました: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -454,7 +454,7 @@ class StationService {
       return toiletSnapshot.docs.first.data()['state'] as int;
     } catch (e) {
       print('トイレの状態取得中にエラーが発生しました: $e');
-      throw e;
+      rethrow;
     }
   }
 }
