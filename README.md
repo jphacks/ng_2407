@@ -50,7 +50,6 @@
 * firebase
 * google_map_flutter
 * geolocator
-* 
 
 #### デバイス
 * Android
@@ -58,5 +57,10 @@
 
 ### 独自技術
 #### ハッカソンで開発した独自機能・技術
-* 独自で開発したものの内容をこちらに記載してください
-* 特に力を入れた部分をファイルリンク、またはcommit_idを記載してください。
+* データベースとのやり取りを通じて，設備の情報(改札内か改札外か等)にたいしてユーザー側からアクセスできるようにしました
+  ( https://github.com/jphacks/ng_2407/blob/main/lib/service/station_service.dart 内updateFacilityVote関数とhttps://github.com/jphacks/ng_2407/blob/main/lib/questionariePage.dart における処理)
+* GoogleMapから駅を検索した際はピンを立て，そのピンのinfoWindowから設備情報が表示されるようにしました．また，DirectionAPIと連携し，GoogleMapに遷移して経路を表示したり，検索欄を押したらオートコンプリート付属の検索をして住所を入力したり，geolocatorを使用してユーザーの位置情報にマップの位置を揃えるようにも実装しました．
+  (ピン・現在位置表示: https://github.com/jphacks/ng_2407/blob/main/lib/displayMap.dart 及び 検索機能: https://github.com/jphacks/ng_2407/blob/main/lib/move2Search.dart , https://github.com/jphacks/ng_2407/blob/main/lib/searchPage.dart)
+* データベースとのやり取りにおいて，バッチ処理を適応することで処理速度をユーザーが不快に思わないものに抑えました．また，読み込みが必要ない部分だけ先に処理をし，読み込みが必要な部分をローディング中にすることでユーザーの体験が損なわれないように設計しました．
+  (データベースとやりとりするサービス処理 https://github.com/jphacks/ng_2407/blob/main/lib/service/station_service.dart )
+* シンプルなデザインに注力をし，ユーザーが説明なしでも直感的に使いやすいようにアプリのUIをデザインしました．
