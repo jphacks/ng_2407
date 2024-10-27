@@ -1,7 +1,8 @@
 # 駅くぐる
 
 ## デモ動画
-[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2024/07/JPHACKS2024_ogp.jpg)](https://youtu.be/PAU-5mBOTMw?si=kv6wfif2_ViJLryt)
+[![デモ動画用サムネ](https://github.com/user-attachments/assets/9a501f21-0fbc-491d-a81f-819df84e0109)
+](https://youtu.be/PAU-5mBOTMw?si=kv6wfif2_ViJLryt)
 
 ## 製品概要
 この駅，トイレない...! ディジタルディバイドを取り除く未来のためのアプリ
