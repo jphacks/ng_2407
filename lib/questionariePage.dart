@@ -29,6 +29,7 @@ class _QuestionarieState extends State<Questionarie> {
       setState(() {
         _currentQuestionIndex++;
       });
+      // return;
     }
 
     bool success = await service.updateFacilityVote(
