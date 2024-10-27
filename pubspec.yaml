@@ -97,6 +97,10 @@ flutter:
           weight: 500
         - asset: assets/fonts/ZenMaru/ZenMaruGothic-Regular.ttf
           weight: 400
+    - family : TrainOne
+      fonts:
+        - asset: assets/fonts/TrainOne/TrainOne-Regular.ttf
+          weight: 400
          
     # - family: Trajan Pro
     #   fonts:

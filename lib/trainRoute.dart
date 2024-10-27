@@ -18,6 +18,7 @@ class _MyTrainRoute extends State<MyTrainRoute> {
   String? selectedLine;
   List<Station> stations = [];
   bool isLoading = false;
+  bool isDisposed = false;
 
   // serch
   final TextEditingController _searchController = TextEditingController();
@@ -67,33 +68,37 @@ class _MyTrainRoute extends State<MyTrainRoute> {
   void initState() {
     super.initState();
     selectedLine = lines.first;
+    isDisposed = false;
     _loadStations(selectedLine!);
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    isDisposed = true;
     super.dispose();
   }
 
   Future<void> _loadStations(String lineName) async {
-    setState(() {
-      isLoading = true; // loading
-    });
-    try {
-      final stationsList =
-          await _stationService.getStationsByLineName(lineName);
+    if (!isDisposed) {
       setState(() {
-        // stationsを更新
-        stations = stationsList;
-        isLoading = false;
+        isLoading = true; // loading
       });
-    } catch (e) {
-      print('駅の取得に失敗しました: $e');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('駅の取得に失敗しました: $e')),
-        );
+      try {
+        final stationsList =
+            await _stationService.getStationsByLineName(lineName);
+        setState(() {
+          // stationsを更新
+          stations = stationsList;
+          isLoading = false;
+        });
+      } catch (e) {
+        print('駅の取得に失敗しました: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('駅の取得に失敗しました: $e')),
+          );
+        }
       }
     }
   }
