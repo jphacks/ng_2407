@@ -24,15 +24,30 @@ class _QuestionarieState extends State<Questionarie> {
 
   StationService service = StationService();
 
+  @override
+  void initState() {
+    super.initState();
+    // 質問データの検証
+    if (widget.questions.isEmpty || widget.id.isEmpty) {
+      // 質問がない場合は前の画面に戻る
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pop();
+      });
+    }
+  }
+
   void _onRadioChanged(int value) async {
     if (_currentQuestionIndex >= widget.questions[0].length) {
       Navigator.of(context).pop();
       return;
     }
     if (value == -1) {
-      setState(() {
-        _currentQuestionIndex++;
-      });
+      if (mounted) {
+        // mountedチェックを追加
+        setState(() {
+          _currentQuestionIndex++;
+        });
+      }
       // return;
     }
 
@@ -47,6 +62,8 @@ class _QuestionarieState extends State<Questionarie> {
       ],
     );
 
+    // mountedチェックを追加
+    if (!mounted) return;
     if (success) {
       setState(() {
         response.add([
@@ -63,10 +80,12 @@ class _QuestionarieState extends State<Questionarie> {
         }
       });
     } else {
-      // エラーハンドリング
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('投票の更新に失敗しました。')),
-      );
+      if (mounted) {
+        // mountedチェックを追加
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('投票の更新に失敗しました。')),
+        );
+      }
     }
   }
 
